@@ -1,0 +1,3 @@
+[submodule "FMU/Reference-FMUs"]
+	path = FMU/Reference-FMUs
+	url = git@github.com:modelica/Reference-FMUs.git
