@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Femyou
 {
@@ -6,5 +7,6 @@ namespace Femyou
   {
     string Name { get; }
     string Description { get; }
+    IReadOnlyDictionary<string,IVariable> Variables { get; }
   }
 }

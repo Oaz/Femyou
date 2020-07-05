@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Femyou;
+using System.Linq;
 
 namespace Femyou.Tests
 {
@@ -19,6 +20,16 @@ namespace Femyou.Tests
       using var model = Model.Load(fmuPath);
       Assert.That(model.Name, Is.EqualTo(expectedName));
       Assert.That(model.Description, Is.EqualTo(expectedDescription));
+    }
+
+    [Test]
+    public void ModelHasVariables()
+    {
+      var fmuPath = TestTools.GetFmuPath("Feedthrough.fmu");
+      using var model = Model.Load(fmuPath);
+      Assert.That(model.Variables.Count(), Is.EqualTo(11));
+      Assert.That(model.Variables["string_param"].Description, Is.EqualTo("String parameter"));
+      Assert.That(model.Variables["bool_out"].Description, Is.EqualTo("boolean output"));
     }
   }
 }
