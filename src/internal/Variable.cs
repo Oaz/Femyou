@@ -9,9 +9,11 @@ namespace Femyou
     {
       Name = xElement.Attribute("name").Value;
       Description = xElement.Attribute("description")?.Value;
+      ValueReference = uint.Parse(xElement.Attribute("valueReference").Value);
     }
 
     public string Name { get; }
     public string Description { get; }
+    public uint ValueReference { get; }
   }
 }
