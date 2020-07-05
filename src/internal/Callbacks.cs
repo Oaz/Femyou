@@ -18,6 +18,7 @@ namespace Femyou
         componentEnvironment = IntPtr.Zero
       };
       Structure = Marshalling.AllocateMemory(1, (ulong)Marshal.SizeOf(functions));
+      Marshal.StructureToPtr(functions, Structure, false);
     }
     public readonly IntPtr Structure;
 

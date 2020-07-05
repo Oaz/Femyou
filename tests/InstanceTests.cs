@@ -7,20 +7,21 @@ namespace Femyou.Tests
 {
   public class InstanceTests
   {
-    [Test]
-    public void InstanceHasDefaultValues()
+    [TestCaseSource("DefaultValuesTestCases")]
+    public void InstanceHasDefaultValues((string filename, string variableName, Func<IInstance, IVariable, object> reader, object expectedDefaultValue) t)
     {
-      using var model = Model.Load(TestTools.GetFmuPath("Feedthrough.fmu"));
+      using var model = Model.Load(TestTools.GetFmuPath(t.filename));
       using var instance = model.CreateCoSimulationInstance("example");
-      Assert.That(instance.ReadBoolean(model.Variables["bool_in"]), Is.EqualTo(false));
-      Assert.That(instance.ReadString(model.Variables["string_param"]), Is.EqualTo("Set me!"));
+      var variable = model.Variables[t.variableName];
+      var actualValue = t.reader(instance, variable);
+      Assert.That(actualValue, Is.EqualTo(t.expectedDefaultValue));
     }
-    [Test]
-    public void OtherInstanceHasDefaultValues()
+    static readonly (string, string, Func<IInstance, IVariable, object>, object)[] DefaultValuesTestCases =
     {
-      using var model = Model.Load(TestTools.GetFmuPath("BouncingBall.fmu"));
-      using var instance = model.CreateCoSimulationInstance("example");
-      Assert.That(instance.ReadReal(model.Variables["g"]), Is.EqualTo(-9.81));
-    }
+      ("Feedthrough.fmu", "bool_in", (IInstance i, IVariable v) => i.ReadBoolean(v), false),
+      ("Feedthrough.fmu", "string_param", (IInstance i, IVariable v) => i.ReadString(v), "Set me!"),
+      ("BouncingBall.fmu", "g", (IInstance i, IVariable v) => i.ReadReal(v), -9.81),
+      ("Stair.fmu", "counter", (IInstance i, IVariable v) => i.ReadInteger(v), 1)
+    };
   }
 }

@@ -20,12 +20,19 @@ namespace Femyou
         FMI2.fmi2Boolean.fmi2False,
         FMI2.fmi2Boolean.fmi2False
       );
+      if (handle==IntPtr.Zero)
+        throw new Exception("Cannot instanciate model");
     }
     public string Name { get; }
     public double ReadReal(IVariable variable) => Read(
       new IVariable[] { variable },
       new double[1],
       (a, b, c, d) => library.fmi2GetReal(a, b, c, d)
+    )[0];
+    public int ReadInteger(IVariable variable) => Read(
+      new IVariable[] { variable },
+      new int[1],
+      (a, b, c, d) => library.fmi2GetInteger(a, b, c, d)
     )[0];
     public bool ReadBoolean(IVariable variable) => Read(
       new IVariable[] { variable },
