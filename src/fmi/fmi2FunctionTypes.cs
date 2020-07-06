@@ -121,7 +121,7 @@ namespace Femyou
   static class Marshalling
   {
     public static IntPtr[] CreateArray(int size) => Enumerable.Repeat(IntPtr.Zero, size).ToArray();
-    public static string[] GetStringArray(IntPtr[] values) => values.Select(v => Marshal.PtrToStringAnsi(v)).ToArray();
+    public static string GetString(IntPtr stringPtr) => Marshal.PtrToStringAnsi(stringPtr);
     public static IntPtr AllocateMemory(size_t nobj, size_t size) => Marshal.AllocHGlobal((int)(nobj * size));
     public static void FreeMemory(IntPtr obj) => Marshal.FreeHGlobal(obj);
     public static void Logger(fmi2ComponentEnvironment componentEnvironment, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message)

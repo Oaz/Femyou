@@ -24,33 +24,33 @@ namespace Femyou
         throw new Exception("Cannot instanciate model");
     }
     public string Name { get; }
-    public double ReadReal(IVariable variable) => Read(
-      new IVariable[] { variable },
-      new double[1],
+    public IEnumerable<double> ReadReal(IEnumerable<IVariable> variables) => Read(
+      variables,
+      new double[variables.Count()],
       (a, b, c, d) => library.fmi2GetReal(a, b, c, d)
-    )[0];
-    public int ReadInteger(IVariable variable) => Read(
-      new IVariable[] { variable },
-      new int[1],
+    );
+    public IEnumerable<int> ReadInteger(IEnumerable<IVariable> variables) => Read(
+      variables,
+      new int[variables.Count()],
       (a, b, c, d) => library.fmi2GetInteger(a, b, c, d)
-    )[0];
-    public bool ReadBoolean(IVariable variable) => Read(
-      new IVariable[] { variable },
-      new FMI2.fmi2Boolean[1],
+    );
+    public IEnumerable<bool> ReadBoolean(IEnumerable<IVariable> variables) => Read(
+      variables,
+      new FMI2.fmi2Boolean[variables.Count()],
       (a, b, c, d) => library.fmi2GetBoolean(a, b, c, d)
-    )[0] == FMI2.fmi2Boolean.fmi2True;
-    public string ReadString(IVariable variable) => Marshalling.GetStringArray(Read(
-      new IVariable[] { variable },
-      Marshalling.CreateArray(1),
+    ).Select(r => r == FMI2.fmi2Boolean.fmi2True);
+    public IEnumerable<string> ReadString(IEnumerable<IVariable> variables) => Read(
+      variables,
+      Marshalling.CreateArray(variables.Count()),
       (a, b, c, d) => library.fmi2GetString(a, b, c, d)
-    ))[0];
-
+    ).Select(r => Marshalling.GetString(r));
+    
     private T[] Read<T>(IEnumerable<IVariable> variables, T[] values, Func<IntPtr, UInt32[], ulong, T[], int> call)
     {
       var valueReferences = variables.Cast<Variable>().Select(variables => variables.ValueReference).ToArray();
       var status = call(handle, valueReferences, (ulong)valueReferences.Length, values);
       if (status != 0)
-        throw new Exception();
+        throw new Exception("Failed to read");
       return values;
     }
 
