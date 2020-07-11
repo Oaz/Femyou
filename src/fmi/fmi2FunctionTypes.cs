@@ -124,15 +124,6 @@ namespace Femyou
     public static string GetString(IntPtr stringPtr) => Marshal.PtrToStringAnsi(stringPtr);
     public static IntPtr AllocateMemory(size_t nobj, size_t size) => Marshal.AllocHGlobal((int)(nobj * size));
     public static void FreeMemory(IntPtr obj) => Marshal.FreeHGlobal(obj);
-    public static void Logger(fmi2ComponentEnvironment componentEnvironment, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message)
-    {
-      using var console = new System.IO.StreamWriter(System.Console.OpenStandardOutput());
-      console.WriteLine(category+": "+message);
-    }
-
-    public static void StepFinished(fmi2ComponentEnvironment componentEnvironment, fmi2Status status)
-    {
-    }
   }
 }
 

@@ -28,7 +28,7 @@ namespace Femyou
     public string Description => ModelDescription.Root.Attribute("description").Value;
     public string GUID => ModelDescription.Root.Attribute("guid").Value;
     public IReadOnlyDictionary<string,IVariable> Variables { get; }
-    public IInstance CreateCoSimulationInstance(string name) => new Instance(name,this,CoSimulation,FMI2.fmi2Type.fmi2CoSimulation);
+    public IInstance CreateCoSimulationInstance(string name, ICallbacks callbacks) => new Instance(name,this,CoSimulation,FMI2.fmi2Type.fmi2CoSimulation,callbacks);
 
     private readonly Library CoSimulation;
 

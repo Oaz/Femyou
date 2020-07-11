@@ -12,7 +12,7 @@ namespace Femyou.Tests
     public void InstanceHasDefaultValues((string filename, string variableName, Func<IInstance, IEnumerable<IVariable>, IEnumerable<object>> reader, object expectedDefaultValue, Action<IInstance, IEnumerable<IVariable>> writer, object newValue) t)
     {
       using var model = Model.Load(TestTools.GetFmuPath(t.filename));
-      using var instance = model.CreateCoSimulationInstance("example");
+      using var instance = TestTools.CreateInstance(model, "example");
       var variables = new IVariable[] { model.Variables[t.variableName] };
       var actualValue = t.reader(instance, variables).First();
       Assert.That(actualValue, Is.EqualTo(t.expectedDefaultValue));
@@ -22,7 +22,7 @@ namespace Femyou.Tests
     public void ChangeInstanceDefaultValues((string filename, string variableName, Func<IInstance, IEnumerable<IVariable>, IEnumerable<object>> reader, object expectedDefaultValue, Action<IInstance, IEnumerable<IVariable>> writer, object newValue) t)
     {
       using var model = Model.Load(TestTools.GetFmuPath(t.filename));
-      using var instance = model.CreateCoSimulationInstance("example");
+      using var instance = TestTools.CreateInstance(model, "example");
       var variables = new IVariable[] { model.Variables[t.variableName] };
       t.writer(instance, variables);
       var actualValue = t.reader(instance, variables).First();
@@ -42,7 +42,7 @@ namespace Femyou.Tests
     public void ReadMultipleValuesInOneCall()
     {
       using var model = Model.Load(TestTools.GetFmuPath("VanDerPol.fmu"));
-      using var instance = model.CreateCoSimulationInstance("example");
+      using var instance = TestTools.CreateInstance(model, "example");
       var actualValues = instance.ReadReal(model.Variables["x0"], model.Variables["x1"], model.Variables["mu"]);
       Assert.That(actualValues, Is.EqualTo(new double[] { 2, 0, 1 }));
     }
@@ -51,7 +51,7 @@ namespace Femyou.Tests
     public void FeedthroughReferenceScenario() // see https://github.com/modelica/Reference-FMUs/tree/master/Feedthrough
     {
       using var model = Model.Load(TestTools.GetFmuPath("Feedthrough.fmu"));
-      using var instance = model.CreateCoSimulationInstance("reference");
+      using var instance = TestTools.CreateInstance(model, "reference");
       instance.WriteReal((model.Variables["real_fixed_param"], 1));
       instance.WriteString((model.Variables["string_param"], "FMI is awesome!"));
       var real_tunable_param = model.Variables["real_tunable_param"];

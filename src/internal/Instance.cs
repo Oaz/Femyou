@@ -6,11 +6,11 @@ namespace Femyou
 {
   class Instance : IInstance
   {
-    public Instance(string name, ModelImpl model, Library library, FMI2.fmi2Type instanceType)
+    public Instance(string name, ModelImpl model, Library library, FMI2.fmi2Type instanceType, ICallbacks cb)
     {
       Name = name;
       this.library = library;
-      callbacks = new Callbacks();
+      callbacks = new Callbacks(this,cb);
       handle = library.fmi2Instantiate(
         name,
         instanceType,

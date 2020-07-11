@@ -9,6 +9,6 @@ namespace Femyou
     string Description { get; }
     IReadOnlyDictionary<string,IVariable> Variables { get; }
 
-    IInstance CreateCoSimulationInstance(string name);
+    IInstance CreateCoSimulationInstance(string name, ICallbacks callbacks = null);
   }
 }
