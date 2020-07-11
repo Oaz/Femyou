@@ -20,10 +20,27 @@ namespace Femyou
         FMI2.fmi2Boolean.fmi2False,
         FMI2.fmi2Boolean.fmi2False
       );
-      if (handle==IntPtr.Zero)
+      if (handle == IntPtr.Zero)
         throw new Exception("Cannot instanciate model");
     }
     public string Name { get; }
+    public double CurrentTime { get; private set; }
+
+    public void StartTime(double time)
+    {
+      CurrentTime = time;
+      library.fmi2SetupExperiment(handle, FMI2.fmi2Boolean.fmi2False, 0.0, CurrentTime, FMI2.fmi2Boolean.fmi2False, 0.0);
+      library.fmi2EnterInitializationMode(handle);
+      library.fmi2ExitInitializationMode(handle);
+      started = true;
+    }
+    public void AdvanceTime(double step)
+    {
+      if(step == 0.0)
+        return;
+      library.fmi2DoStep(handle,CurrentTime,step,FMI2.fmi2Boolean.fmi2True);
+      CurrentTime += step;
+    }
     public IEnumerable<double> ReadReal(IEnumerable<IVariable> variables) => Read(
       variables,
       new double[variables.Count()],
@@ -44,7 +61,7 @@ namespace Femyou
       Marshalling.CreateArray(variables.Count()),
       (a, b, c, d) => library.fmi2GetString(a, b, c, d)
     ).Select(r => Marshalling.GetString(r));
-    
+
     private T[] Read<T>(IEnumerable<IVariable> variables, T[] values, Func<IntPtr, UInt32[], ulong, T[], int> call)
     {
       var valueReferences = variables.Cast<Variable>().Select(variables => variables.ValueReference).ToArray();
@@ -54,12 +71,41 @@ namespace Femyou
       return values;
     }
 
+    public void WriteReal(IEnumerable<(IVariable, double)> variables) => Write(
+      variables,
+      (a, b, c, d) => library.fmi2SetReal(a, b, c, d)
+    );
+    public void WriteInteger(IEnumerable<(IVariable, int)> variables) => Write(
+      variables,
+      (a, b, c, d) => library.fmi2SetInteger(a, b, c, d)
+    );
+    public void WriteBoolean(IEnumerable<(IVariable, bool)> variables) => Write(
+      variables.Select(v => (v.Item1, v.Item2 ? FMI2.fmi2Boolean.fmi2True : FMI2.fmi2Boolean.fmi2False)),
+      (a, b, c, d) => library.fmi2SetBoolean(a, b, c, d)
+    );
+    public void WriteString(IEnumerable<(IVariable, string)> variables) => Write(
+      variables,
+      (a, b, c, d) => library.fmi2SetString(a, b, c, d)
+    );
+
+    private void Write<T>(IEnumerable<(IVariable, T)> variables, Func<IntPtr, UInt32[], ulong, T[], int> call)
+    {
+      var valueReferences = variables.Select(variables => variables.Item1).Cast<Variable>().Select(variables => variables.ValueReference).ToArray();
+      var values = variables.Select(variables => variables.Item2).ToArray();
+      var status = call(handle, valueReferences, (ulong)valueReferences.Length, values);
+      if (status != 0)
+        throw new Exception("Failed to write");
+    }
+
     private readonly Library library;
     private readonly IntPtr handle;
     private readonly Callbacks callbacks;
+    private bool started;
 
     public void Dispose()
     {
+      if(started)
+        library.fmi2Terminate(handle);
       library.fmi2FreeInstance(handle);
       callbacks.Dispose();
     }
