@@ -1,6 +1,8 @@
 # Femyou
 loading and running [fmi-standard](https://fmi-standard.org/) FMUs in dotnet core
 
+![CI](https://github.com/Oaz/Femyou/workflows/CI/badge.svg)
+
 ## Features
 
 This is a limited implementation of the fmi-standard.
