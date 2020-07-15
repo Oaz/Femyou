@@ -13,13 +13,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Generate Reference-FMUs Makefile
+      run: cmake -S Reference-FMUs -B bin
+      working-directory: FMU
+    - name: Build Reference-FMUs
+      run: make
+      working-directory: FMU/bin
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build assembly
       run: dotnet build --configuration Release --no-restore
-    - name: Test
+    - name: Test assembly
       run: dotnet test --no-restore --verbosity normal
