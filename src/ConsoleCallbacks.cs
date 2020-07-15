@@ -1,6 +1,6 @@
 using System;
 
-namespace Femyou.Tests
+namespace Femyou
 {
   public class ConsoleCallbacks : ICallbacks
   {
