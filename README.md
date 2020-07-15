@@ -1,6 +1,8 @@
 # Femyou
 loading and running [fmi-standard](https://fmi-standard.org/) FMUs in dotnet core
 
+[![License][license-image]][license-url]
+
 ## Features
 
 This is a limited implementation of the fmi-standard.
