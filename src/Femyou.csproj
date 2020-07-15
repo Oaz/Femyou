@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Description>Loading and running fmi-standard FMUs in dotnet core.</Description>
+    <AssemblyTitle>Femyou</AssemblyTitle>
+    <Authors>oaz</Authors>
+    <AssemblyName>Femyou</AssemblyName>
+    <PackageTags>fmi;FMU;modelica;model;simulation</PackageTags>
+    <PackageProjectUrl>https://github.com/Oaz/Femyou</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Oaz/Femyou</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © Olivier Azeau</Copyright>
+
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
