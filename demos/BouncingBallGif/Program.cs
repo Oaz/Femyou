@@ -41,6 +41,7 @@ namespace Femyou.Demos.BouncingBallGif
         v = variables.Last();
         AddFrame(gif, info, canvas =>
         {
+          canvas.Clear(SKColors.WhiteSmoke);
           canvas.DrawText($"h = {h:F2} m", hCoord, paint);
           canvas.DrawText($"v = {v:F2} m/s", vCoord, paint);
           canvas.DrawCircle(info.Width / 2, info.Height - (int)h - r, r, paint);
