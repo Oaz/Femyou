@@ -3,6 +3,8 @@ loading and running [fmi-standard](https://fmi-standard.org/) FMUs in dotnet cor
 
 ![CI](https://github.com/Oaz/Femyou/workflows/CI/badge.svg)
 
+[The binary package is available from NuGet](https://www.nuget.org/packages/Femyou/)
+
 ## Features
 
 This is a limited implementation of the fmi-standard.
