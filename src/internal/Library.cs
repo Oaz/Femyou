@@ -6,7 +6,7 @@ namespace Femyou
 {
   class Library : IDisposable
   {
-    public Library(string baseFolder, string name) : this(Path.Combine(baseFolder,"binaries","linux64",name+".so"))
+    public Library(string baseFolder, string name) : this(Platform.GetLibraryPath(Environment.OSVersion.Platform,Environment.Is64BitOperatingSystem,baseFolder,name))
     {
     }
 
