@@ -34,6 +34,7 @@ namespace Femyou
 
     public void Dispose()
     {
+      CoSimulation.Dispose();
       Directory.Delete(TmpFolder,true);
     }
   }
