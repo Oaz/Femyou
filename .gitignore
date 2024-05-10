@@ -3,3 +3,6 @@ bin
 .vscode
 .ionide
 *.nupkg
+.idea
+*.user
+
