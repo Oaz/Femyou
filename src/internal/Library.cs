@@ -1,12 +1,16 @@
 using System;
-using System.IO;
 using NativeLibraryLoader;
 
 namespace Femyou
 {
   class Library : IDisposable
   {
-    public Library(string baseFolder, string name) : this(Platform.GetLibraryPath(Environment.OSVersion.Platform,Environment.Is64BitOperatingSystem,baseFolder,name))
+    public Library(string baseFolder, string name)
+      : this(Platform.GetLibraryPath(
+        Environment.OSVersion.Platform,
+        Environment.Is64BitProcess,
+        baseFolder,
+        name))
     {
     }
 
