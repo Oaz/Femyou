@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 
 using System;
+using System.Runtime.InteropServices;
 using size_t = System.UInt64;
 
 /* Type definitions of variables passed as arguments
@@ -20,21 +21,16 @@ using size_t = System.UInt64;
 
 using fmi2Component = System.IntPtr;               /* Pointer to FMU instance       */
 using fmi2ComponentEnvironment = System.IntPtr;    /* Pointer to FMU environment    */
-using fmi2FMUstate = System.IntPtr;                /* Pointer to internal FMU state */
+/* Pointer to internal FMU state */
 using fmi2ValueReference = System.UInt32;
 using fmi2Real = System.Double;
 using fmi2Integer = System.Int32;
-using fmi2Boolean = System.Int32;
 using fmi2String = System.String;
 
 /* Type definitions */
 using fmi2Status = System.Int32;
-using fmi2StatusKind = System.Int32;
 
-using System.Runtime.InteropServices;
-using System.Linq;
-
-namespace Femyou
+namespace Femyou.Interop
 {
   static class FMI2
   {
@@ -93,7 +89,6 @@ namespace Femyou
     public delegate fmi2Status fmi2EnterInitializationModeTYPE(fmi2Component c);
     public delegate fmi2Status fmi2ExitInitializationModeTYPE(fmi2Component c);
     public delegate fmi2Status fmi2TerminateTYPE(fmi2Component c);
-    public delegate fmi2Status fmi2ResetTYPE(fmi2Component c);
 
     /* Getting and setting variable values */
     public delegate fmi2Status fmi2GetRealTYPE(fmi2Component c, fmi2ValueReference[] vr, size_t nvr, fmi2Real[] value);
@@ -117,14 +112,6 @@ namespace Femyou
                                          fmi2Real currentCommunicationPoint,
                                          fmi2Real communicationStepSize,
                                          fmi2Boolean noSetFMUStatePriorToCurrentPoint);
-  }
-
-  static class Marshalling
-  {
-    public static IntPtr[] CreateArray(int size) => Enumerable.Repeat(IntPtr.Zero, size).ToArray();
-    public static string GetString(IntPtr stringPtr) => Marshal.PtrToStringAnsi(stringPtr);
-    public static IntPtr AllocateMemory(size_t nobj, size_t size) => Marshal.AllocHGlobal((int)(nobj * size));
-    public static void FreeMemory(IntPtr obj) => Marshal.FreeHGlobal(obj);
   }
 }
 

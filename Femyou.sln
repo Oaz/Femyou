@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9D2D98F1-B
 		.gitignore = .gitignore
 		README.md = README.md
 		logo.svg = logo.svg
+		FMU\build-reference-FMUs.sh = FMU\build-reference-FMUs.sh
 	EndProjectSection
 EndProject
 Global

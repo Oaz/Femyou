@@ -58,7 +58,7 @@ namespace BouncingBallGif
         new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).AbsolutePath, nameof(Femyou)
         ),
       "FMU",
-      "bin",
+      "bin3",
       "dist"
       );
 

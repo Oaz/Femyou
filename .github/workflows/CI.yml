@@ -17,12 +17,19 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Generate Reference-FMUs Makefile
-      run: cmake -S Reference-FMUs -B bin
+    - name: Generate Reference-FMUs Makefile (FMI 2.0)
+      run: cmake -S Reference-FMUs -D FMI_VERSION=2 -B bin2
       working-directory: FMU
-    - name: Build Reference-FMUs
+    - name: Build Reference-FMUs (FMI 2.0)
       run: make
-      working-directory: FMU/bin
+      working-directory: FMU/bin2
+
+    - name: Generate Reference-FMUs Makefile (FMI 3.0)
+      run: cmake -S Reference-FMUs -D FMI_VERSION=3 -B bin3
+      working-directory: FMU
+    - name: Build Reference-FMUs (FMI 3.0)
+      run: make
+      working-directory: FMU/bin3
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3

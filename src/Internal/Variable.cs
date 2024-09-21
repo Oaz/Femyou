@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Femyou.Internal
 {
-  class Variable : IVariable
+  public class Variable : IVariable
   {
     public Variable(XElement xElement)
     {
@@ -17,6 +17,13 @@ namespace Femyou.Internal
       {
         throw new FmuException("Failed to load variable description", e);
       }
+    }
+
+    public Variable(string name, string description, uint valueReference)
+    {
+      Name = name;
+      Description = description;
+      ValueReference = valueReference;
     }
 
     public string Name { get; }

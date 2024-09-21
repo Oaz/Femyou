@@ -10,10 +10,10 @@ loading and running [fmi-standard](https://fmi-standard.org/) FMUs in .NET
 
 ## Features
 
-This is a limited implementation of the fmi-standard.
+This is a limited implementation of the fmi-standards.
 
 Available features :
-* Load FMU model
+* Load FMU model encoded in either FMI 2.0 or 3.0 standard
 * Get model variables
 * Create co-simulation instance
 * Read and write variable values from instance
@@ -42,8 +42,10 @@ while (h > 0 || Math.Abs(v) > 0)
 
 ## Demos
 
-The [Bouncing Ball](https://github.com/modelica/Reference-FMUs/tree/master/BouncingBall) reference FMU visualized with GIF animation.
+These GIFs were created with
+- the included demo program
+- the [Bouncing Ball](https://github.com/modelica/Reference-FMUs/tree/master/BouncingBall) reference FMU compiled in FMI 2.0 and 3.0 standards
 
-This GIF was created with the included demo program.
-
-![BouncingBall](BouncingBall.gif?raw=true)
+| FMI 2.0 | FMI 3.0 |
+|---------|---------|
+| ![](BouncingBall2.gif?raw=true) | ![](BouncingBall3.gif?raw=true) |
