@@ -1,5 +1,3 @@
-using System;
-
 namespace Femyou
 {
   public interface IVariable

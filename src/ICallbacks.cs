@@ -3,7 +3,7 @@ namespace Femyou
 {
   public enum Status
   {
-    OK,
+    Ok,
     Warning,
     Discard,
     Error,

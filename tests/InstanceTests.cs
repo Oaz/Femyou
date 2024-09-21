@@ -47,6 +47,8 @@ namespace Femyou.Tests
       Assert.That(actualValues, Is.EqualTo(new double[] { 2, 0, 1 }));
     }
 
+    // ReSharper disable InconsistentNaming
+
     [Test]
     public void FeedthroughReferenceScenario() // see https://github.com/modelica/Reference-FMUs/tree/master/Feedthrough
     {
@@ -70,7 +72,7 @@ namespace Femyou.Tests
         instance.WriteReal((real_tunable_param, pt.real_tunable_param), (real_continuous_in, pt.input.real_continuous), (real_discrete_in, pt.input.real_discrete));
         instance.WriteInteger((int_in, pt.input.integer));
         instance.WriteBoolean((bool_in, pt.input.boolean));
-        var actual_reals = instance.ReadReal(real_continuous_out, real_discrete_out);
+        var actual_reals = instance.ReadReal(real_continuous_out, real_discrete_out).ToArray();
         var actual_int = instance.ReadInteger(int_out);
         var actual_bool = instance.ReadBoolean(bool_out);
         Assert.That(actual_reals.First(), Is.EqualTo(pt.expectedOutput.real_continuous));

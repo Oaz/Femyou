@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 
 using System;
 using size_t = System.UInt64;

@@ -7,5 +7,9 @@ namespace Femyou
     public FmuException(string text) : base(text)
     {
     }
+
+    public FmuException(string text, Exception innerException) : base(text, innerException)
+    {
+    }
   }
 }

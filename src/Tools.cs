@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Reflection;
 
 namespace Femyou
 {
@@ -14,6 +12,7 @@ namespace Femyou
       return GetBaseFolder(directory, name);
     }
 
-    public static IInstance CreateInstance(IModel model, string name) => model.CreateCoSimulationInstance(name, new ConsoleCallbacks());
+    public static IInstance CreateInstance(IModel model, string name) =>
+      model.CreateCoSimulationInstance(name, new ConsoleCallbacks());
   }
 }

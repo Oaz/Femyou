@@ -6,7 +6,7 @@ using Femyou;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
-namespace Femyou.Demos.BouncingBallGif
+namespace BouncingBallGif
 {
   class Program
   {
@@ -26,7 +26,7 @@ namespace Femyou.Demos.BouncingBallGif
         TextSize = 16
       };
 
-      using var model = Model.Load(Path.Combine(fmuFolder, "BouncingBall.fmu"));
+      using var model = Model.Load(Path.Combine(FmuFolder, "BouncingBall.fmu"));
       using var instance = Tools.CreateInstance(model, "demo");
       var altitude = model.Variables["h"];
       var velocity = model.Variables["v"];
@@ -36,21 +36,31 @@ namespace Femyou.Demos.BouncingBallGif
       instance.StartTime(0.0);
       while (h > 0 || Math.Abs(v) > 0)
       {
-        var variables = instance.ReadReal(altitude, velocity);
+        var variables = instance.ReadReal(altitude, velocity).ToArray();
         h = variables.First();
         v = variables.Last();
         AddFrame(gif, info, canvas =>
         {
           canvas.Clear(SKColors.WhiteSmoke);
+          // ReSharper disable AccessToModifiedClosure
           canvas.DrawText($"h = {h:F2} m", hCoord, paint);
           canvas.DrawText($"v = {v:F2} m/s", vCoord, paint);
+          // ReSharper disable once PossibleLossOfFraction
           canvas.DrawCircle(info.Width / 2, info.Height - (int)h - r, r, paint);
+          // ReSharper restore AccessToModifiedClosure
         });
         instance.AdvanceTime(0.1);
       }
     }
 
-    static readonly string fmuFolder = Path.Combine(Tools.GetBaseFolder(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).AbsolutePath, nameof(Femyou)), "FMU", "bin", "dist");
+    static readonly string FmuFolder = Path.Combine(
+      Tools.GetBaseFolder(
+        new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).AbsolutePath, nameof(Femyou)
+        ),
+      "FMU",
+      "bin",
+      "dist"
+      );
 
     private static void AddFrame(AnimatedGifCreator gif, SKImageInfo info, Action<SKCanvas> action)
     {
