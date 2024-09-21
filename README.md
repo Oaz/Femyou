@@ -1,9 +1,12 @@
+![](logo.svg)
+
 # Femyou
-loading and running [fmi-standard](https://fmi-standard.org/) FMUs in dotnet core
+loading and running [fmi-standard](https://fmi-standard.org/) FMUs in .NET
 
 ![CI](https://github.com/Oaz/Femyou/workflows/CI/badge.svg)
 
-[The binary package is available from NuGet](https://www.nuget.org/packages/Femyou/)
+[The binary package is available from NuGet](https://www.nuget.org/packages/Femyou/) as a .NETStandard2.1 lib.
+
 
 ## Features
 
@@ -40,5 +43,7 @@ while (h > 0 || Math.Abs(v) > 0)
 ## Demos
 
 The [Bouncing Ball](https://github.com/modelica/Reference-FMUs/tree/master/BouncingBall) reference FMU visualized with GIF animation.
+
+This GIF was created with the included demo program.
 
 ![BouncingBall](BouncingBall.gif?raw=true)
