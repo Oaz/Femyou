@@ -12,7 +12,7 @@ namespace Femyou
       Instance = instance;
       CB = cb;
       handle = GCHandle.Alloc(this);
-      var functions = new FMI2.fmi2CallbackFunctions
+      functions = new FMI2.fmi2CallbackFunctions
       {
         logger = LoggerCallback,
         allocateMemory = Marshalling.AllocateMemory,
@@ -27,7 +27,8 @@ namespace Femyou
     public readonly ICallbacks CB;
     public readonly IntPtr Structure;
     private readonly GCHandle handle;
-
+    private readonly FMI2.fmi2CallbackFunctions functions;
+    
     public void Dispose()
     {
       Marshalling.FreeMemory(Structure);

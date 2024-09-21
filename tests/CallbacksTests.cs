@@ -1,4 +1,4 @@
-
+using System;
 using NUnit.Framework;
 
 namespace Femyou.Tests
@@ -15,15 +15,30 @@ namespace Femyou.Tests
       {
         instance.WriteReal((model.Variables["v_min"], 1));
       }
-      catch
+      catch(FmuException)
       {
         Assert.That(spyCallback.Instance.Name, Is.EqualTo("my name"));
         Assert.That(spyCallback.Status, Is.EqualTo(Status.Error));
         Assert.That(spyCallback.Category, Is.EqualTo("logStatusError"));
-        Assert.That(spyCallback.Message, Is.EqualTo("Variable v_min (value reference 4) is constant and cannot be set."));
+        Assert.That(spyCallback.Message,
+          Is.EqualTo("Variable v_min (value reference 4) is constant and cannot be set."));
         return;
       }
+
       Assert.Fail("Exception shall have been raised");
+    }
+
+    [Test]
+    public void CallbacksMustSurviveGarbageCollection()
+    {
+      var spyCallback = new SpyCallback();
+      using var model = Model.Load(TestTools.GetFmuPath("BouncingBall.fmu"));
+      using var instance = model.CreateCoSimulationInstance("my name", spyCallback);
+      GC.Collect();
+      Assert.Throws<FmuException>(() =>
+      {
+        instance.WriteReal((model.Variables["v_min"], 1));
+      });
     }
 
     class SpyCallback : ICallbacks
@@ -32,6 +47,7 @@ namespace Femyou.Tests
       public Status Status { get; private set; }
       public string Category { get; private set; }
       public string Message { get; private set; }
+
       public void Logger(IInstance instance, Status status, string category, string message)
       {
         Instance = instance;

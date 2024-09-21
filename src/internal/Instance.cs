@@ -21,7 +21,7 @@ namespace Femyou
         FMI2.fmi2Boolean.fmi2False
       );
       if (handle == IntPtr.Zero)
-        throw new Exception("Cannot instanciate model");
+        throw new FmuException("Cannot instanciate model");
     }
     public string Name { get; }
     public double CurrentTime { get; private set; }
@@ -67,7 +67,7 @@ namespace Femyou
       var valueReferences = variables.Cast<Variable>().Select(variables => variables.ValueReference).ToArray();
       var status = call(handle, valueReferences, (ulong)valueReferences.Length, values);
       if (status != 0)
-        throw new Exception("Failed to read");
+        throw new FmuException("Failed to read");
       return values;
     }
 
@@ -94,7 +94,7 @@ namespace Femyou
       var values = variables.Select(variables => variables.Item2).ToArray();
       var status = call(handle, valueReferences, (ulong)valueReferences.Length, values);
       if (status != 0)
-        throw new Exception("Failed to write");
+        throw new FmuException("Failed to write");
     }
 
     private readonly Library library;
