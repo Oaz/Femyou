@@ -34,7 +34,7 @@ namespace BouncingBallGif
       instance.WriteReal((velocity, v));
       using var gif = new AnimatedGifCreator("BouncingBall.gif");
       instance.StartTime(0.0);
-      while (h > 0 || Math.Abs(v) > 0)
+      while (h > 0.001 || Math.Abs(v) > 0)
       {
         var variables = instance.ReadReal(altitude, velocity).ToArray();
         h = variables.First();
