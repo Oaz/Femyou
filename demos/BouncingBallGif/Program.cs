@@ -34,7 +34,7 @@ namespace BouncingBallGif
       instance.WriteReal((altitude, h));
       instance.WriteReal((velocity, v));
       var gifPath = Path.Combine(CurrentFolder, "BouncingBall.gif");
-      using var gif = new AnimatedGifCreator("BouncingBall.gif");
+      using var gif = new AnimatedGifCreator(gifPath);
       instance.StartTime(0.0);
       while (h > 0 || Math.Abs(v) > 0)
       {
