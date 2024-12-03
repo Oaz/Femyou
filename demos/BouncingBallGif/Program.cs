@@ -28,6 +28,7 @@ namespace BouncingBallGif
       };
 
       using var model = Model.Load(Path.Combine(FmuFolder, "BouncingBall.fmu"));
+      using var instance = Tools.CreateInstance(model, "demo");
       var altitude = model.Variables["h"];
       var velocity = model.Variables["v"];
       instance.WriteReal((altitude, h));
