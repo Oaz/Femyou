@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using AnimatedGif;
@@ -27,11 +28,12 @@ namespace BouncingBallGif
       };
 
       using var model = Model.Load(Path.Combine(FmuFolder, "BouncingBall.fmu"));
-      using var instance = Tools.CreateInstance(model, "demo");
+      using var gif = new AnimatedGifCreator(gifPath);
       var altitude = model.Variables["h"];
       var velocity = model.Variables["v"];
       instance.WriteReal((altitude, h));
       instance.WriteReal((velocity, v));
+      var gifPath = Path.Combine(CurrentFolder, "BouncingBall.gif");
       using var gif = new AnimatedGifCreator("BouncingBall.gif");
       instance.StartTime(0.0);
       while (h > 0 || Math.Abs(v) > 0)
@@ -60,6 +62,11 @@ namespace BouncingBallGif
       "FMU",
       "bin3",
       "dist"
+      );
+
+    static readonly string CurrentFolder = 
+      Tools.GetBaseFolder(
+        new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location).AbsolutePath, nameof(Femyou)
       );
 
     private static void AddFrame(AnimatedGifCreator gif, SKImageInfo info, Action<SKCanvas> action)
