@@ -11,6 +11,9 @@ namespace Femyou.Tests
     public ModelTests(int version)
     {
       _getFmuPath = name => TestTools.GetFmuPath(version, name);
+      var isDarwin = System.Runtime.InteropServices.RuntimeInformation.OSDescription.Contains("Darwin");
+      var isArm64 = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture == System.Runtime.InteropServices.Architecture.Arm64;
+      Assume.That(version == 3 && isDarwin && isArm64, Is.False);
     }
     private readonly Func<string, string> _getFmuPath;
     

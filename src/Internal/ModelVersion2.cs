@@ -8,13 +8,16 @@ namespace Femyou.Internal
   {
     public string CoSimulationElementName { get; } = "CoSimulation";
     public string GuidAttributeName { get; } = "guid";
-    public string RelativePath(string name, Architecture architecture, PlatformID platform) =>
-      platform switch
+    public string RelativePath(string name, Architecture architecture, PlatformID platform)
+    {
+      var isDarwin = System.Runtime.InteropServices.RuntimeInformation.OSDescription.Contains("Darwin");
+      return platform switch
       {
-        PlatformID.Unix => Path.Combine("binaries", "linux" + MapArchitecture(architecture), name + ".so"),
+        PlatformID.Unix => Path.Combine("binaries", (isDarwin ? "darwin" : "linux") + MapArchitecture(architecture), name + (isDarwin ? ".dylib" : ".so")),
         PlatformID.Win32NT => Path.Combine("binaries", "win" + MapArchitecture(architecture), name + ".dll"),
         _ => throw new FmuException($"Unsupported operating system {platform}"),
       };
+    }
 
     public Library Load(string path) => new Library2(path);
 

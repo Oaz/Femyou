@@ -11,6 +11,8 @@ namespace Femyou.Internal
   {
     public ModelImpl(string fmuPath)
     {
+      var res = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture;
+      var res2 = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
       try
       {
         TmpFolder = Path.Combine(Path.GetTempPath(),nameof(Femyou),Path.GetFileName(fmuPath));
@@ -23,7 +25,7 @@ namespace Femyou.Internal
           .Select(sv => new Variable(sv) as IVariable)
           .ToDictionary(sv => sv.Name, sv => sv);
         var fmiVersion = root!.Attribute("fmiVersion")?.Value;
-        ModelVersion = fmiVersion!.StartsWith("2.") ? (IModelVersion) new ModelVersion2() : new ModelVersion3();
+        ModelVersion = fmiVersion!.StartsWith("2.") ? (IModelVersion)new ModelVersion2() : new ModelVersion3();
         var coSimulationId = root
           !.Element(ModelVersion.CoSimulationElementName)
           !.Attribute("modelIdentifier")
