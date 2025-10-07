@@ -40,11 +40,11 @@ public class InstanceTests
 
   static readonly (string, string, Func<IInstance, IEnumerable<IVariable>, IEnumerable<object>>, object, Action<IInstance, IEnumerable<IVariable>>, object)[] DefaultValuesTestCases =
   {
-    ("Feedthrough.fmu", "bool_in", (i,v) => i.ReadBoolean(v).Cast<object>(), false, (i,vs) => i.WriteBoolean(vs.Select(v => (v,true))), true),
-    ("Feedthrough.fmu", "string_param", (i,v) => i.ReadString(v), "Set me!", (i,vs) => i.WriteString(vs.Select(v => (v,"Foo"))), "Foo"),
+    ("Feedthrough.fmu", "Boolean_input", (i,v) => i.ReadBoolean(v).Cast<object>(), false, (i,vs) => i.WriteBoolean(vs.Select(v => (v,true))), true),
+    ("Feedthrough.fmu", "String_input", (i,v) => i.ReadString(v), "Set me!", (i,vs) => i.WriteString(vs.Select(v => (v,"Foo"))), "Foo"),
     ("BouncingBall.fmu", "g", (i,v) => i.ReadReal(v).Cast<object>(), -9.81, (i,vs) => i.WriteReal(vs.Select(v => (v,3.46))), 3.46),
     ("Stair.fmu", "counter", (i,v) => i.ReadInteger(v).Cast<object>(), 1, (i,vs) => {}, 1),
-    ("Feedthrough.fmu", "int_in", (i,v) => i.ReadInteger(v).Cast<object>(), 0, (i,vs) => i.WriteInteger(vs.Select(v => (v,28))), 28)
+    ("Feedthrough.fmu", "Int32_input", (i,v) => i.ReadInteger(v).Cast<object>(), 0, (i,vs) => i.WriteInteger(vs.Select(v => (v,28))), 28)
   };
 
   [Test]
@@ -64,17 +64,17 @@ public class InstanceTests
   {
     using var model = Model.Load(_getFmuPath("Feedthrough.fmu"));
     using var instance = Tools.CreateInstance(model, "reference");
-    instance.WriteReal((model.Variables["real_fixed_param"], 1));
-    instance.WriteString((model.Variables["string_param"], "FMI is awesome!"));
-    var real_tunable_param = model.Variables["real_tunable_param"];
-    var real_continuous_in = model.Variables["real_continuous_in"];
-    var real_continuous_out = model.Variables["real_continuous_out"];
-    var real_discrete_in = model.Variables["real_discrete_in"];
-    var real_discrete_out = model.Variables["real_discrete_out"];
-    var int_in = model.Variables["int_in"];
-    var int_out = model.Variables["int_out"];
-    var bool_in = model.Variables["bool_in"];
-    var bool_out = model.Variables["bool_out"];
+    instance.WriteReal((model.Variables["Float64_fixed_parameter"], 1));
+    instance.WriteString((model.Variables["String_input"], "FMI is awesome!"));
+    var real_tunable_param = model.Variables["Float64_tunable_parameter"];
+    var real_continuous_in = model.Variables["Float64_continuous_input"];
+    var real_continuous_out = model.Variables["Float64_continuous_output"];
+    var real_discrete_in = model.Variables["Float64_discrete_input"];
+    var real_discrete_out = model.Variables["Float64_discrete_output"];
+    var int_in = model.Variables["Int32_input"];
+    var int_out = model.Variables["Int32_output"];
+    var bool_in = model.Variables["Boolean_input"];
+    var bool_out = model.Variables["Boolean_output"];
     instance.StartTime(0.0);
     foreach (var pt in feedthroughScenario)
     {

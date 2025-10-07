@@ -14,7 +14,7 @@ namespace Femyou.Tests
     }
     private readonly Func<string, string> _getFmuPath;
     
-    [TestCase("BouncingBall.fmu", "bouncingball", "This model calculates the trajectory, over time, of a ball dropped from a height of 1 m.")]
+    [TestCase("BouncingBall.fmu", "bouncingball", "This model calculates the trajectory, over time, of a ball dropped from a height of 1 m")]
     [TestCase("VanDerPol.fmu", "van der pol oscillator", "This model implements the van der Pol oscillator")]
     public void ModelHasNameAndDescription(string filename, string expectedName, string expectedDescription)
     {
@@ -30,8 +30,8 @@ namespace Femyou.Tests
       var fmuPath = _getFmuPath("Feedthrough.fmu");
       using var model = Model.Load(fmuPath);
       Assert.That(model.Variables.Count(), Is.GreaterThanOrEqualTo(11));
-      Assert.That(model.Variables["string_param"].Description, Is.EqualTo("String parameter"));
-      Assert.That(model.Variables["bool_out"].Description, Is.EqualTo("boolean output"));
+      Assert.That(model.Variables["String_input"].Description, Is.EqualTo("String parameter"));
+      Assert.That(model.Variables["Boolean_output"].Description, Is.EqualTo("boolean output"));
     }
   }
 }

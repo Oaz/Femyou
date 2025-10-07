@@ -28,15 +28,16 @@ namespace Femyou.Interop
       fmi3String category,
       fmi3String message);
 
-    public delegate fmi3Instance fmi3InstantiateBasicCoSimulationTYPE(
+    public delegate fmi3Instance fmi3InstantiateCoSimulationTYPE(
       fmi3String instanceName,
       fmi3String instantiationToken,
       fmi3String resourceLocation,
       fmi3Boolean visible,
       fmi3Boolean loggingOn,
-      fmi3Boolean intermediateVariableGetRequired,
-      fmi3Boolean intermediateInternalVariableGetRequired,
-      fmi3Boolean intermediateVariableSetRequired,
+      fmi3Boolean eventModeUsed,
+      fmi3Boolean earlyReturnAllowed,
+      IntPtr requiredIntermediateVariables, /* FAKE, pointer */
+      fmi3Integer nRequiredIntermediateVariables, /* FAKE, size_t */
       fmi3InstanceEnvironment instanceEnvironment,
       fmi3CallbackLogMessage logMessage,
       IntPtr intermediateUpdate);
@@ -64,7 +65,8 @@ namespace Femyou.Interop
       fmi3Float64 currentCommunicationPoint,
       fmi3Float64 communicationStepSize,
       fmi3Boolean noSetFMUStatePriorToCurrentPoint,
-      IntPtr terminate,
+      IntPtr eventHandlingNeeded,
+      IntPtr terminateSimulation,
       IntPtr earlyReturn,
       IntPtr lastSuccessfulTime);
 

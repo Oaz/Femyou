@@ -6,7 +6,7 @@ namespace Femyou.Internal
 {
   public class ModelVersion3 : IModelVersion
   {
-    public string CoSimulationElementName { get; } = "BasicCoSimulation";
+    public string CoSimulationElementName { get; } = "CoSimulation";
     public string GuidAttributeName { get; } = "instantiationToken";
     public Library Load(string path) => new Library3(path);
     

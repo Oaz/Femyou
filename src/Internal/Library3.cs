@@ -9,7 +9,7 @@ namespace Femyou.Internal
   {
     public Library3(string path) : base(path)
     {
-      fmi3InstantiateBasicCoSimulation = FmuLibrary.LoadFunction<FMI3.fmi3InstantiateBasicCoSimulationTYPE>(nameof(fmi3InstantiateBasicCoSimulation));
+      fmi3InstantiateCoSimulation = FmuLibrary.LoadFunction<FMI3.fmi3InstantiateCoSimulationTYPE>(nameof(fmi3InstantiateCoSimulation));
       fmi3FreeInstance = FmuLibrary.LoadFunction<FMI3.fmi3FreeInstanceTYPE>(nameof(fmi3FreeInstance));
       fmi3EnterInitializationMode = FmuLibrary.LoadFunction<FMI3.fmi3EnterInitializationModeTYPE>(nameof(fmi3EnterInitializationMode));
       fmi3ExitInitializationMode = FmuLibrary.LoadFunction<FMI3.fmi3ExitInitializationModeTYPE>(nameof(fmi3ExitInitializationMode));
@@ -28,7 +28,7 @@ namespace Femyou.Internal
     }
 
     // ReSharper disable InconsistentNaming -- must use fmi standard names to load function in library
-    private readonly FMI3.fmi3InstantiateBasicCoSimulationTYPE fmi3InstantiateBasicCoSimulation;
+    private readonly FMI3.fmi3InstantiateCoSimulationTYPE fmi3InstantiateCoSimulation;
     private readonly FMI3.fmi3FreeInstanceTYPE fmi3FreeInstance;
     private readonly FMI3.fmi3EnterInitializationModeTYPE fmi3EnterInitializationMode;
     private readonly FMI3.fmi3ExitInitializationModeTYPE fmi3ExitInitializationMode;
@@ -50,7 +50,7 @@ namespace Femyou.Internal
     
     public override IntPtr Instantiate(string name, string guid, string tmpFolder, Callbacks callbacks)
     {
-      return fmi3InstantiateBasicCoSimulation(
+      return fmi3InstantiateCoSimulation(
         name,
         guid,
         tmpFolder,
@@ -58,8 +58,9 @@ namespace Femyou.Internal
         FMI3.fmi3Boolean.fmi3True,
         FMI3.fmi3Boolean.fmi3False,
         FMI3.fmi3Boolean.fmi3False,
-        FMI3.fmi3Boolean.fmi3False,
-        callbacks.Custom, 
+        IntPtr.Zero,
+        0,
+        callbacks.Custom,
         ((Callbacks3)callbacks).LogMessageDelegate,
         IntPtr.Zero
       );
@@ -80,15 +81,18 @@ namespace Femyou.Internal
 
     public override void Step(IntPtr handle, double currentTime, double step)
     {
-      fmi3DoStep(
+      var buf = Marshalling.AllocateMemory(4, sizeof(bool));
+      var res = fmi3DoStep(
         handle,
         currentTime,
         step,
         FMI3.fmi3Boolean.fmi3True,
-        IntPtr.Zero, 
-        IntPtr.Zero, 
-        IntPtr.Zero
+        buf,
+        buf+sizeof(bool),
+        buf+2*sizeof(bool),
+        buf+3*sizeof(bool)
       );
+      if (res != 0) { throw new FmuException("Status not OK: " + res); }
     }
 
     public override void Shutdown(IntPtr handle, bool started)
